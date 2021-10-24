@@ -37,20 +37,14 @@ static int has_more_tokens(tokenizer_t *tokenizer)
    return tokenizer->cursor < (int)strlen(tokenizer->str); 
 }
 
-static void load(tokenizer_t *tokenizer, char *str)
-{
-   size_t len = strlen(str);
-   tokenizer->str = (char*) malloc((len +  1) * sizeof(char));
-
-   strcpy(tokenizer->str, str);
-   tokenizer->cursor = 0;
-}
 
 static token_t *do_num(tokenizer_t *tokenizer)
 {
       token_t *token = (token_t*)malloc(sizeof(token_t));
       token->type = NUMBER;
-      char *buffer = (char*) malloc(strlen((tokenizer->str) + 1) * sizeof(char));
+      size_t len = strlen(tokenizer->str);
+      char *buffer = (char*) malloc((len + 1) * sizeof(char));
+       
 
       int count = 0;
 
@@ -73,9 +67,9 @@ static token_t *do_operator(tokenizer_t *tokenizer)
       token_t *token = (token_t*)malloc(sizeof(token_t));
       token->type = OPERATOR;
       token->value = (long int) tokenizer->str[tokenizer->cursor];
+      tokenizer->cursor++;
       return token;
 }
-
 
 static token_t *get_next_token(tokenizer_t *tokenizer)
 {
@@ -91,6 +85,16 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
       return do_operator(tokenizer);
 
    return NULL;
+}
+
+static void load(tokenizer_t *tokenizer, char *str)
+{
+   size_t len = strlen(str);
+   tokenizer->str = (char*) malloc((len +  1) * sizeof(char));
+
+   strcpy(tokenizer->str, str);
+
+   tokenizer->cursor = 0;
 }
 
 

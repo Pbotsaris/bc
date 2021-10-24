@@ -31,33 +31,51 @@ static node_t *create_node(long int value)
    return node;
 }
 
-static node_t *numeric_literal(char *str)
+static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type) 
 {
-   long int num = str_to_num(str);
+   token_t *token = parser->lookahead;
 
-   return create_node(num);
+   if(token == NULL)
+   {
+      printf("Unexpected end of input.\n");// add token type here
+      return NULL;
+   }
+
+   if(token->type != type)
+   {
+      printf("Unexpected token.\n"); // add error, token types
+      return NULL;
+   }
+
+   // advance to next token
+   parser->lookahead = tokenizer->get_next_token(tokenizer);
+
+   return create_node(token->value);
 
 }
 
 
-
- static node_t *program(char *str)
+static node_t *numeric_literal(parser_t *parser, tokenizer_t *tokenizer)
 {
-    return numeric_literal(str);
+   return eat(parser, tokenizer, NUMBER);
+
 }
 
 
-static node_t *parse(char *str)
+static node_t *program(parser_t *parser, tokenizer_t *tokenizer)
 {
-   return program(str);
+   return numeric_literal(parser, tokenizer);
 }
 
 
-//static void eat (parser_t parser, type_t type) 
-//{
-//   
-//
-//}
+static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
+{
+   tokenizer->load(tokenizer, str);
+   parser->lookahead = tokenizer->get_next_token(tokenizer);
+
+   return program(parser, tokenizer);
+}
+
 
 void init_parser(parser_t *parser)
 {
