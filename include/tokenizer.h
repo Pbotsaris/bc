@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum type {NUMBER, OPERAND}type_t;
+typedef enum type {NUMBER, OPERATOR}type_t;
 
 typedef struct token{
   type_t type;

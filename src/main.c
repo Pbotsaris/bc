@@ -35,15 +35,20 @@ int main(void)
  tree.print(&tree);
  tree.free_all(&tree);
 
-
  tokenizer_t tokenizer;
 
  init_tokenizer(&tokenizer);
- tokenizer.load(&tokenizer, "12a3c4");
+ tokenizer.load(&tokenizer, "12*34");
+ printf("b4 cursor: %d\n", tokenizer.cursor);
  token_t *token = tokenizer.get_next_token(&tokenizer);
  printf("from token: %ld, cursor: %d\n", token->value, tokenizer.cursor);
  if(token->type == NUMBER)
     printf("token type: Number\n");
+
+ token = tokenizer.get_next_token(&tokenizer);
+ printf("from token: %c\n", (char)token->value);
+
+
 
  //token = tokenizer.get_next_token(&tokenizer);
  //printf("from token2: %s cursor: %d\n", token->value, tokenizer.cursor);

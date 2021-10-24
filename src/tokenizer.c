@@ -20,10 +20,16 @@
 #include "../include/tokenizer.h"
 #include "../include/utils.h"
 
+// +, -, *, /, and %
 
 static int is_num(char c)
 {
    return c >= '0' && c <= '9';
+}
+
+static int is_operator(char c)
+{
+return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
 }
 
 static int has_more_tokens(tokenizer_t *tokenizer)
@@ -40,17 +46,8 @@ static void load(tokenizer_t *tokenizer, char *str)
    tokenizer->cursor = 0;
 }
 
-
-static token_t *get_next_token(tokenizer_t *tokenizer)
+static token_t *do_num(tokenizer_t *tokenizer)
 {
-   if(!has_more_tokens(tokenizer))
-   {
-      printf("no more values\n");
-      return NULL;
-   }
-
-   if(is_num(tokenizer->str[0]))
-   {
       token_t *token = (token_t*)malloc(sizeof(token_t));
       token->type = NUMBER;
       char *buffer = (char*) malloc(strlen((tokenizer->str) + 1) * sizeof(char));
@@ -63,15 +60,36 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
          tokenizer->cursor++;
          count++;
       }
-      // free string in the tokenizer.
-      // free(tokenizer->str);
+
       buffer[count] = '\0';
       token->value = str_to_num(buffer);
 
       free(buffer);
       return token;
+}
 
+static token_t *do_operator(tokenizer_t *tokenizer)
+{
+      token_t *token = (token_t*)malloc(sizeof(token_t));
+      token->type = OPERATOR;
+      token->value = (long int) tokenizer->str[tokenizer->cursor];
+      return token;
+}
+
+
+static token_t *get_next_token(tokenizer_t *tokenizer)
+{
+   if(!has_more_tokens(tokenizer))
+   {
+      printf("no more values\n");
+      return NULL;
    }
+
+   if(is_num(tokenizer->str[tokenizer->cursor]))
+      return do_num(tokenizer);
+   else if(is_operator(tokenizer->str[tokenizer->cursor]))
+      return do_operator(tokenizer);
+
    return NULL;
 }
 
