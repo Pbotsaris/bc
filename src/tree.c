@@ -16,6 +16,10 @@
  * =====================================================================================
  */
 
+/*
+ * TREE IMPLMENTATION NOT BEING USED
+ */ 
+
 #include "../include/tree.h"
 
 
@@ -71,7 +75,7 @@ void print_tree(node_t *root)
    if(root == NULL)
       return;
 
-     printf("%d\n", root->value); 
+     printf("%ld\n", root->value); 
 
    print_tree(root->left);
    print_tree(root->right);
@@ -120,10 +124,4 @@ void init_tree(tree_t *tree)
    tree->print = print;
    tree->free_all = free_all;
 }
-
-
-
-
-
-
 
