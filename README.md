@@ -14,3 +14,8 @@ The field `value` in the `token` struct is being used for both the numerical lit
 Note that there is a `tree` struct which are currently not being used. When I first kicked off the project I though I'd need one but I will probably not need it as the parser will already output a tree or an AST.
 
 `main.c` has printf to test the parsing as well as some commented code with the old tree I had. Please ignore those.
+
+
+--
+
+Another note: You will notice that in the parser module the function `multiplicative_expression` that is evaluating mutiplcation and division is called within the `additive_expression`. This is to ensure that multiplication and division always take precedence.
