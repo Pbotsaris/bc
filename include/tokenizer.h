@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum type {NUMBER,
-  OPERATOR,
+typedef enum type {
+  NUMBER,
   ADDITIVE_OPERATOR,
   MULTIPLICATION_OPERATOR,
   MODULO_OPERATOR,
