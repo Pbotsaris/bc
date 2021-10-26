@@ -27,20 +27,13 @@ static int is_whitespace(char c)
  return c == ' ';
 }
 
-static int is_additive(char c) { return c == '+';}
-static int is_subtract(char c) { return c == '-';}
-static int is_divide(char c) { return c == '/';}
-static int is_multiply(char c) { return c == '*';}
+static int is_additive(char c) { return c == '+' || c == '-';}
+static int is_multiplication(char c) { return c == '/' || c == '*';}
 static int is_modulo(char c) { return c == '%';}
 
 static int is_num(char c)
 {
    return c >= '0' && c <= '9';
-}
-
-static int is_operator(char c)
-{
-   return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
 }
 
 static int has_more_tokens(tokenizer_t *tokenizer)
@@ -94,12 +87,8 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
       return do_num(tokenizer);
    else if(is_additive(tokenizer->str[tokenizer->cursor]))
        return do_operator(tokenizer, ADDITIVE_OPERATOR);
-   else if(is_subtract(tokenizer->str[tokenizer->cursor]))
-       return do_operator(tokenizer, SUBTRACT_OPERATOR);
-   else if(is_divide(tokenizer->str[tokenizer->cursor]))
-       return do_operator(tokenizer, DIVIDE_OPERATOR);
-   else if(is_multiply(tokenizer->str[tokenizer->cursor]))
-       return do_operator(tokenizer, MULTIPLY_OPERATOR);
+   else if(is_multiplication(tokenizer->str[tokenizer->cursor]))
+       return do_operator(tokenizer, MULTIPLICATION_OPERATOR);
    else if(is_modulo(tokenizer->str[tokenizer->cursor]))
        return do_operator(tokenizer, MODULO_OPERATOR);
    else if(is_whitespace(tokenizer->str[tokenizer->cursor]))

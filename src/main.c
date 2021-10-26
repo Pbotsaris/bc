@@ -40,9 +40,13 @@ int main(void)
  init_tokenizer(&tokenizer);
  init_parser(&parser);
  
-node_t *node = parser.parse(&parser, &tokenizer,"10");
+node_t *node = parser.parse(&parser, &tokenizer,"10+2*10");
 
-printf("node value: %d, type: %s\n", (char)node->value, node->type == NUMBER ? "Number": "Operator" );
+printf("top: %c, type: %s\n", (char)node->value, node->type == NUMBER ? "Number": "Operator" );
+printf("left: %d, type: %s\n", (char)node->left->value, node->left->type == NUMBER ? "Number": "Operator" );
+printf("right: %c, type: %s\n", (char)node->right->value, node->right->type == NUMBER ? "Number": "Operator");
+printf("right->left %ld\n", node->right->left->value);
+printf("right->right %ld\n", node->right->right->value);
 
 
 // add -> call left + right

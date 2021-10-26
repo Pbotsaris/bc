@@ -54,45 +54,53 @@ static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type)
 
 }
 
-
 static node_t *numeric_literal(parser_t *parser, tokenizer_t *tokenizer)
 {
    return eat(parser, tokenizer, NUMBER);
-
 }
 
-//static node_t *operator(parser_t *parser, tokenizer_t *tokenizer)
-//{
-//   return eat(parser, tokenizer, OPERATOR);
-//}
-
-static node_t *additive_expression(parser_t *parser, tokenizer_t *tokenizer)
+static node_t *primary_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-   node_t *left = numeric_literal(parser, tokenizer);
+   return numeric_literal(parser, tokenizer);
+}
+
+static node_t *multiplicative_expression(parser_t *parser, tokenizer_t *tokenizer)
+{
+   node_t *left = primary_expression(parser, tokenizer);
    node_t *operator = NULL;
    node_t *right = NULL;
 
-   while(parser->lookahead->type == ADDITIVE_OPERATOR)
+   while(parser->lookahead != NULL && parser->lookahead->type == MULTIPLICATION_OPERATOR)
    {
-     operator = eat(parser, tokenizer, ADDITIVE_OPERATOR);
-     right = numeric_literal(parser, tokenizer);
-   }
-
-   if(operator != NULL)
-   {
+      operator = eat(parser, tokenizer, MULTIPLICATION_OPERATOR);
+      right = primary_expression(parser, tokenizer);
       operator->left = left;
       operator->right = right;
-      return operator;
+      left = operator;
    }
-   else
-    // return literal if no operator
-     return left;
+   return left;
 }
 
+static node_t *additive_expression(parser_t *parser, tokenizer_t *tokenizer)
+{
+   node_t *left = multiplicative_expression(parser, tokenizer);
+   node_t *operator = NULL;
+   node_t *right = NULL;
+
+   while(parser->lookahead != NULL && parser->lookahead->type == ADDITIVE_OPERATOR)
+   {
+      operator = eat(parser, tokenizer, ADDITIVE_OPERATOR);
+      right = multiplicative_expression(parser, tokenizer);
+      operator->left = left;
+      operator->right = right;
+      left = operator;
+   }
+   return left;
+}
 
 static node_t *expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-return additive_expression(parser, tokenizer);
+   return additive_expression(parser, tokenizer);
 }
 
 
