@@ -17,8 +17,8 @@ typedef struct tree{
   struct node *root;
   int count;
   int height;
-  void (*add) (struct tree*, long int);
-  void (*get_height) (struct tree*);
+//  void (*add) (struct tree*, long int);
+//  void (*get_height) (struct tree*);
   void (*free_all) (struct tree*);
   void (*print) (struct tree*);
 }tree_t;

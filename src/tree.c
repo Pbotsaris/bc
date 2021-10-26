@@ -16,71 +16,57 @@
  * =====================================================================================
  */
 
-/*
- * TREE IMPLMENTATION NOT BEING USED
- */ 
-
 #include "../include/tree.h"
 
+/* PRIVATE */
+static void print(tree_t *tree);
+void free_tree(node_t *root);
+static void print_type(type_t type);
 
-static int max(int a, int b)
+/* PUBLIC */
+static void print_tree(node_t *root);
+static void free_all(tree_t *tree);
+
+
+/*
+ * PRIVATE 
+ */
+
+static void print_type(type_t type)
 {
-   return a >= b ? a : b;
-}
-
-static int node_height(node_t *root)
-{
-      return root == NULL ? -1 : root->height;
-}
-
-static node_t *create_node(node_t *node, long int value)
-{
-   node = (node_t*) malloc(sizeof(node_t));
-   node->value = value;
-   node->height = 0;
-   node->left = NULL;
-   node->right = NULL;
-
-   return node;
-}
-
-static node_t *add_node(node_t *root, long int value)
-{
-   if(root == NULL)
-      return create_node(root, value);
-
-   if(value <= root->value)
-      root->right = add_node(root->right, value);
-   else
-      root->left = add_node(root->left, value);
-
-   root->height = 1 + max(node_height(root->left), node_height(root->right));  
-
-   return root;
-
+ switch(type)
+ {
+  case NUMBER: 
+     printf("Type: Number\n");
+      break;
+  case ADDITIVE_OPERATOR:
+     printf("Type: Additive Operator\n");
+      break;
+  case MULTIPLICATION_OPERATOR:
+     printf("Type: Mutiplication Operator\n");
+      break;
+   default: 
+     printf("Type: Unknown type\n");
+ }
 }
 
 
-static int height(node_t *root)
-{
-   if(root == NULL)
-      return 0;
-
-   return 1 + max(height(root->left), height(root->right));
-}
-
-
-void print_tree(node_t *root)
+static void print_tree(node_t *root)
 {
    if(root == NULL)
       return;
 
+   print_type(root->type);
+
+   if(root->type == NUMBER)
      printf("%ld\n", root->value); 
+
+   else
+      printf("%c\n", (char)root->value);
 
    print_tree(root->left);
    print_tree(root->right);
 
-   
 }
 
 void free_tree(node_t *root)
@@ -94,16 +80,9 @@ void free_tree(node_t *root)
    free(root);
 }
 
-static void add(tree_t *tree, long int value)
-{
-   tree->root = add_node(tree->root, value);
-}
-
-static void get_height(tree_t *tree)
-{
-   tree->height = height(tree->root) - 1;
-}
-
+/*
+ * PUBLIC
+ */
 
 static void free_all(tree_t *tree)
 {
@@ -119,8 +98,6 @@ static void print(tree_t *tree)
 void init_tree(tree_t *tree)
 {
    tree->root = NULL;
-   tree->add = add;
-   tree->get_height = get_height;
    tree->print = print;
    tree->free_all = free_all;
 }

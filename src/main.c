@@ -25,13 +25,13 @@
 int main(void)
 {
 
- 
  tokenizer_t tokenizer;
  parser_t parser;
  tree_t ast;
 
  init_tokenizer(&tokenizer);
  init_parser(&parser);
+ init_tree(&ast);
  
 /*
  *
@@ -40,24 +40,8 @@ int main(void)
  */
 
 ast.root = parser.parse(&parser, &tokenizer,"(10+2)*10");
-
-//printf("right->left %ld\n", node->right->left->value);
-//printf("right->right %ld\n", node->right->right->value);
-
-
-/*
- *
-   IMPLEMENTED THIS TREE WHEN FIRST STARTED THE PROJECT BUT NOT USING IT. 
-
- tree_t tree;
- init_tree(&tree);
- tree.add(&tree, 10);
- tree.add(&tree, 3);
- tree.add(&tree, 12);
- tree.get_height(&tree);
- tree.print(&tree);
- tree.free_all(&tree);
-*/
+ast.print(&ast);
+ast.free_all(&ast);
 
  return 0;
 
