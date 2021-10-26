@@ -19,6 +19,10 @@
 #include "../include/parser.h"
 #include "../include/utils.h"
 
+/* PUBLIC */
+static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str);
+
+/* PRIVATE */
 static node_t *create_node(long int value, type_t type);
 static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type);
 static node_t *numeric_literal(parser_t *parser, tokenizer_t *tokenizer);
@@ -29,10 +33,8 @@ static node_t *additive_expression(parser_t *parser, tokenizer_t *tokenizer);
 static node_t *expression(parser_t *parser, tokenizer_t *tokenizer);
 static node_t *program(parser_t *parser, tokenizer_t *tokenizer);
 
-static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str);
-
 /*
- *   PUBLIC
+ *   PUBLIC 
  */
 
 void init_parser(parser_t *parser)
@@ -40,6 +42,9 @@ void init_parser(parser_t *parser)
    parser->parse = parse;
 }
 
+/*
+ *   PUBLIC METHOD
+ */
 
 static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
 {

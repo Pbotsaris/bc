@@ -104,7 +104,6 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
       return get_next_token(tokenizer);
    }
 
-
    return NULL;
 }
 

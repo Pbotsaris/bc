@@ -18,14 +18,36 @@
 
 #include "../include/tree.h"
 
+/* PUBLIC */
+static void print_tree(node_t *root);
+static void free_all(tree_t *tree);
+
 /* PRIVATE */
 static void print(tree_t *tree);
 void free_tree(node_t *root);
 static void print_type(type_t type);
 
-/* PUBLIC */
-static void print_tree(node_t *root);
-static void free_all(tree_t *tree);
+/*
+ * PUBLIC
+ */
+
+static void free_all(tree_t *tree)
+{
+  free_tree(tree->root);
+}
+
+static void print(tree_t *tree)
+{
+  print_tree(tree->root);
+}
+
+
+void init_tree(tree_t *tree)
+{
+   tree->root = NULL;
+   tree->print = print;
+   tree->free_all = free_all;
+}
 
 
 /*
@@ -80,25 +102,4 @@ void free_tree(node_t *root)
    free(root);
 }
 
-/*
- * PUBLIC
- */
-
-static void free_all(tree_t *tree)
-{
-  free_tree(tree->root);
-}
-
-static void print(tree_t *tree)
-{
-  print_tree(tree->root);
-}
-
-
-void init_tree(tree_t *tree)
-{
-   tree->root = NULL;
-   tree->print = print;
-   tree->free_all = free_all;
-}
 
