@@ -28,6 +28,7 @@ int main(void)
  
  tokenizer_t tokenizer;
  parser_t parser;
+ tree_t ast;
 
  init_tokenizer(&tokenizer);
  init_parser(&parser);
@@ -38,12 +39,10 @@ int main(void)
   
  */
 
-node_t *node = parser.parse(&parser, &tokenizer,"10+2*10");
-printf("root: %c, type: %s\n", (char)node->value, node->type == NUMBER ? "Number": "Operator" );
-printf("left: %d, type: %s\n", (char)node->left->value, node->left->type == NUMBER ? "Number": "Operator" );
-printf("right: %c, type: %s\n", (char)node->right->value, node->right->type == NUMBER ? "Number": "Operator");
-printf("right->left %ld\n", node->right->left->value);
-printf("right->right %ld\n", node->right->right->value);
+ast.root = parser.parse(&parser, &tokenizer,"(10+2)*10");
+
+//printf("right->left %ld\n", node->right->left->value);
+//printf("right->right %ld\n", node->right->right->value);
 
 
 /*
