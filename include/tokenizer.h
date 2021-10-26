@@ -5,12 +5,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef enum type {NUMBER, OPERATOR}type_t;
-
+typedef enum type {NUMBER,
+  OPERATOR,
+  ADDITIVE_OPERATOR,
+  SUBTRACT_OPERATOR,
+  DIVIDE_OPERATOR,
+  MULTIPLY_OPERATOR,
+  MODULO_OPERATOR,
+  }type_t;
+  
 typedef struct token{
   type_t type;
   long int value;
-
 }token_t;
 
 typedef struct tokenizer {
@@ -21,6 +27,6 @@ typedef struct tokenizer {
 }tokenizer_t;
 
 
- void init_tokenizer(tokenizer_t *tokenizer);
+void init_tokenizer(tokenizer_t *tokenizer);
 
 #endif

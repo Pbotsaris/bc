@@ -22,6 +22,17 @@
 
 // +, -, *, /, and %
 
+static int is_whitespace(char c)
+{
+ return c == ' ';
+}
+
+static int is_additive(char c) { return c == '+';}
+static int is_subtract(char c) { return c == '-';}
+static int is_divide(char c) { return c == '/';}
+static int is_multiply(char c) { return c == '*';}
+static int is_modulo(char c) { return c == '%';}
+
 static int is_num(char c)
 {
    return c >= '0' && c <= '9';
@@ -29,7 +40,7 @@ static int is_num(char c)
 
 static int is_operator(char c)
 {
-return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
+   return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
 }
 
 static int has_more_tokens(tokenizer_t *tokenizer)
@@ -37,38 +48,38 @@ static int has_more_tokens(tokenizer_t *tokenizer)
    return tokenizer->cursor < (int)strlen(tokenizer->str); 
 }
 
+static token_t *do_operator(tokenizer_t *tokenizer, type_t type)
+{
+   token_t *token = (token_t*)malloc(sizeof(token_t));
+   token->type = type;
+   token->value = (long int) tokenizer->str[tokenizer->cursor];
+   tokenizer->cursor++;
+   return token;
+}
+
 
 static token_t *do_num(tokenizer_t *tokenizer)
 {
-      token_t *token = (token_t*)malloc(sizeof(token_t));
-      token->type = NUMBER;
-      size_t len = strlen(tokenizer->str);
-      char *buffer = (char*) malloc((len + 1) * sizeof(char));
-       
+   token_t *token = (token_t*)malloc(sizeof(token_t));
+   token->type = NUMBER;
+   size_t len = strlen(tokenizer->str);
+   char *buffer = (char*) malloc((len + 1) * sizeof(char));
 
-      int count = 0;
 
-      while(is_num(tokenizer->str[tokenizer->cursor]))
-      {
-         buffer[count] = tokenizer->str[tokenizer->cursor];
-         tokenizer->cursor++;
-         count++;
-      }
+   int count = 0;
 
-      buffer[count] = '\0';
-      token->value = str_to_num(buffer);
-
-      free(buffer);
-      return token;
-}
-
-static token_t *do_operator(tokenizer_t *tokenizer)
-{
-      token_t *token = (token_t*)malloc(sizeof(token_t));
-      token->type = OPERATOR;
-      token->value = (long int) tokenizer->str[tokenizer->cursor];
+   while(is_num(tokenizer->str[tokenizer->cursor]))
+   {
+      buffer[count] = tokenizer->str[tokenizer->cursor];
       tokenizer->cursor++;
-      return token;
+      count++;
+   }
+
+   buffer[count] = '\0';
+   token->value = str_to_num(buffer);
+
+   free(buffer);
+   return token;
 }
 
 static token_t *get_next_token(tokenizer_t *tokenizer)
@@ -81,8 +92,22 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
 
    if(is_num(tokenizer->str[tokenizer->cursor]))
       return do_num(tokenizer);
-   else if(is_operator(tokenizer->str[tokenizer->cursor]))
-      return do_operator(tokenizer);
+   else if(is_additive(tokenizer->str[tokenizer->cursor]))
+       return do_operator(tokenizer, ADDITIVE_OPERATOR);
+   else if(is_subtract(tokenizer->str[tokenizer->cursor]))
+       return do_operator(tokenizer, SUBTRACT_OPERATOR);
+   else if(is_divide(tokenizer->str[tokenizer->cursor]))
+       return do_operator(tokenizer, DIVIDE_OPERATOR);
+   else if(is_multiply(tokenizer->str[tokenizer->cursor]))
+       return do_operator(tokenizer, MULTIPLY_OPERATOR);
+   else if(is_modulo(tokenizer->str[tokenizer->cursor]))
+       return do_operator(tokenizer, MODULO_OPERATOR);
+   else if(is_whitespace(tokenizer->str[tokenizer->cursor]))
+   {
+      tokenizer->cursor++;
+      return get_next_token(tokenizer);
+   }
+
 
    return NULL;
 }

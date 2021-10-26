@@ -22,7 +22,6 @@
 #include "../include/tokenizer.h"
 #include "../include/parser.h"
 
-
 int main(void)
 {
  //tree_t tree;
@@ -42,9 +41,24 @@ int main(void)
  init_parser(&parser);
  
 node_t *node = parser.parse(&parser, &tokenizer,"10");
-printf("node value: %ld\n", node->value);
+
+printf("node value: %d, type: %s\n", (char)node->value, node->type == NUMBER ? "Number": "Operator" );
+
+
+// add -> call left + right
+// negative(uniary) ->  - call self 
+// integar -> return val
+// if token is parentheses we can get_next_token again
 
  return 0;
 
 }
 
+
+// E EXPRESSION
+// F FACTOR (-10 or !20) for example
+// T TERM
+// E -> T + E | T - E | T
+
+
+//subtract, add, negative, divide, module, multiply

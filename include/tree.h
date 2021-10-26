@@ -3,13 +3,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
-typedef enum node_type{NUMERIC_LITERAL}node_type_t;
+#include "./tokenizer.h"
 
 typedef struct node{
-  node_type_t type;
   long int value;
   int height;
+  type_t type;
   struct node *left;
   struct node *right;
 }node_t;
