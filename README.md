@@ -13,7 +13,7 @@ There are basically 4 structures which sumarizes well what the code is doing.
 
 The field `value` in the `token` struct is being used for both the numerical literal and operators. For that reason I am casting the `char` type to `long int` when storing in the struct and casting it back out when printing.
 
-Note that there is also a `tree` struct to store the resulting AST from the parsing process. This struct has very basic functionality such as printing and freeing the tree. Some fields of this struct are not being used / need clean up.
+Note that there is also a `tree` struct to store the resulting AST from the parsing process. This struct has very basic functionality such as printing and freeing the tree. 
 
 --
 Another note: You will notice that in the parser module the function `multiplicative_expression` that is evaluating mutiplcation and division is called within the `additive_expression`. This is to ensure that multiplication and division always take precedence. The same logic is applied with expression with parenthesis.
