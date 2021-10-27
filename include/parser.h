@@ -23,10 +23,11 @@
 
 typedef struct parser{
   token_t   *lookahead;
-
   /* METHOD */
   node_t    *(*parse) (struct parser*, tokenizer_t*, char*);
 }parser_t;
+
+typedef node_t *(func_ptr) (parser_t*, tokenizer_t*);
 
 void init_parser(parser_t *parser);
 
