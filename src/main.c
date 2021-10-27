@@ -22,12 +22,14 @@
 #include "../include/tokenizer.h"
 #include "../include/parser.h"
 
+/* E -> T + E | T - E | T */
+
 int main(void)
 {
 
- tokenizer_t tokenizer;
- parser_t parser;
- tree_t ast;
+ tokenizer_t  tokenizer;
+ parser_t     parser;
+ tree_t       ast;
 
  init_tokenizer(&tokenizer);
  init_parser(&parser);
@@ -46,12 +48,3 @@ ast.free_all(&ast);
  return 0;
 
 }
-
-
-// E EXPRESSION
-// F FACTOR (-10 or !20) for example
-// T TERM
-// E -> T + E | T - E | T
-
-
-//subtract, add, negative, divide, module, multiply
