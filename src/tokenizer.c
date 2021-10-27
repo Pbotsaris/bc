@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (), 
+ *         Author:  Pedro Botsaris, 
  *   Organization:  
  *
  * =====================================================================================
@@ -20,59 +20,45 @@
 #include "../include/tokenizer.h"
 #include "../include/utils.h"
 
-// 10 == line feed }
-static int is_whitespace(char c) { return c == ' ' || c == '\t' || c == 10; }
-static int is_additive(char c) { return c == '+' || c == '-';}
-static int is_multiplication(char c) { return c == '/' || c == '*';}
-static int is_modulo(char c) { return c == '%';}
-static int is_num(char c) { return c >= '0' && c <= '9'; }
-static int is_parenthesis(char c) { return c == '(' || c == ')' ; }
 
-static int has_more_tokens(tokenizer_t *tokenizer)
+/* PUBLIC */
+static void load(tokenizer_t *tokenizer, char *str);
+static token_t *get_next_token(tokenizer_t *tokenizer);
+
+/* PRIVATE */
+static int is_whitespace(char c);
+static int is_additive(char c);
+static int is_multiplication(char c);
+static int is_modulo(char c);
+static int is_num(char c);
+static int is_parenthesis(char c);
+static int has_more_tokens(tokenizer_t *tokenizer);
+static token_t *do_operator(tokenizer_t *tokenizer, type_t type);
+static token_t *do_parenthesis(tokenizer_t *tokenizer);
+static token_t *do_num(tokenizer_t *tokenizer);
+
+/*
+ * PUBLIC FUNCTION
+ */
+
+void init_tokenizer(tokenizer_t *tokenizer)
 {
-   return tokenizer->cursor < (int)strlen(tokenizer->str); 
+   tokenizer->load = load;
+   tokenizer->get_next_token = get_next_token;
 }
 
-static token_t *do_operator(tokenizer_t *tokenizer, type_t type)
+/*
+ * PUBLIC METHODS
+ */
+
+static void load(tokenizer_t *tokenizer, char *str)
 {
-   token_t *token =     (token_t*)malloc(sizeof(token_t));
-   token->type =        type;
-   token->value =       (long int) tokenizer->str[tokenizer->cursor];
-   tokenizer->cursor++;
-   return token;
-}
+   size_t len = strlen(str);
+   tokenizer->str = (char*) malloc((len +  1) * sizeof(char));
 
-static token_t *do_parenthesis(tokenizer_t *tokenizer)
-{
+   strcpy(tokenizer->str, str);
 
-   token_t *token =     (token_t*)malloc(sizeof(token_t));
-   token->type =        PARENTHESIS;
-   token->value =       (long int) tokenizer->str[tokenizer->cursor];
-   tokenizer->cursor++;
-
-   return token;
-}
-
-
-static token_t *do_num(tokenizer_t *tokenizer)
-{
-   token_t *token =     (token_t*)malloc(sizeof(token_t));
-   token->type =        NUMBER;
-   size_t len =         strlen(tokenizer->str);
-   char *buffer =       (char*) malloc((len + 1) * sizeof(char));
-   int count =          0;
-
-   while(is_num(tokenizer->str[tokenizer->cursor]))
-   {
-      buffer[count] = tokenizer->str[tokenizer->cursor];
-      tokenizer->cursor++;
-      count++;
-   }
-
-   buffer[count] =      '\0';
-   token->value =       str_to_num(buffer);
-   free(buffer);
-   return token;
+   tokenizer->cursor = 0;
 }
 
 static token_t *get_next_token(tokenizer_t *tokenizer)
@@ -107,19 +93,62 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
    return NULL;
 }
 
-static void load(tokenizer_t *tokenizer, char *str)
+/*
+ * PRIVATE
+ */
+
+static int is_whitespace(char c)     { return c == ' ' || c == '\t' || c == 10; }
+static int is_additive(char c)       { return c == '+' || c == '-';}
+static int is_multiplication(char c) { return c == '/' || c == '*';}
+static int is_modulo(char c)         { return c == '%';}
+static int is_num(char c)            { return c >= '0' && c <= '9'; }
+static int is_parenthesis(char c)    { return c == '(' || c == ')' ; }
+
+static int has_more_tokens(tokenizer_t *tokenizer)
 {
-   size_t len = strlen(str);
-   tokenizer->str = (char*) malloc((len +  1) * sizeof(char));
-
-   strcpy(tokenizer->str, str);
-
-   tokenizer->cursor = 0;
+   return tokenizer->cursor < (int)strlen(tokenizer->str); 
 }
 
-
-void init_tokenizer(tokenizer_t *tokenizer)
+static token_t *do_operator(tokenizer_t *tokenizer, type_t type)
 {
-   tokenizer->load = load;
-   tokenizer->get_next_token = get_next_token;
+   token_t *token   = (token_t*)malloc(sizeof(token_t));
+   token->type      = type;
+   token->value     = (long int) tokenizer->str[tokenizer->cursor];
+
+   tokenizer->cursor++;
+   return token;
 }
+
+static token_t *do_parenthesis(tokenizer_t *tokenizer)
+{
+
+   token_t *token    = (token_t*)malloc(sizeof(token_t));
+   token->type       = PARENTHESIS;
+   token->value      = (long int) tokenizer->str[tokenizer->cursor];
+   tokenizer->cursor++;
+
+   return token;
+}
+
+static token_t *do_num(tokenizer_t *tokenizer)
+{
+   token_t *token    = (token_t*)malloc(sizeof(token_t));
+   token->type       = NUMBER;
+   size_t len        = strlen(tokenizer->str);
+   char *buffer      = (char*) malloc((len + 1) * sizeof(char));
+   int count         = 0;
+
+   while(is_num(tokenizer->str[tokenizer->cursor]))
+   {
+      buffer[count]  = tokenizer->str[tokenizer->cursor];
+      tokenizer->cursor++;
+      count++;
+   }
+
+   buffer[count]      = '\0';
+   token->value       = str_to_num(buffer);
+
+   free(buffer);
+   return token;
+}
+

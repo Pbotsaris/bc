@@ -22,8 +22,10 @@
 #include "../include/tokenizer.h"
 
 typedef struct parser{
-  token_t *lookahead;
-  node_t * (*parse) (struct parser*, tokenizer_t*, char*);
+  token_t   *lookahead;
+
+  /* METHOD */
+  node_t    *(*parse) (struct parser*, tokenizer_t*, char*);
 }parser_t;
 
 void init_parser(parser_t *parser);

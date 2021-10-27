@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  Pedro Botsaris, 
+ *         Author:  Pedro Botsaris 
  *         
  *   Organization:  
  *

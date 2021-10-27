@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (), 
+ *         Author:  Pedro Botsaris, 
  *   Organization:  
  *
  * =====================================================================================
@@ -44,9 +44,9 @@ static void print(tree_t *tree)
 
 void init_tree(tree_t *tree)
 {
-   tree->root = NULL;
-   tree->print = print;
-   tree->free_all = free_all;
+   tree->root       = NULL;
+   tree->print      = print;
+   tree->free_all   = free_all;
 }
 
 
