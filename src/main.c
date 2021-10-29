@@ -22,31 +22,23 @@
 #include "../include/tokenizer.h"
 #include "../include/parser.h"
 
-/* E -> T + E | T - E | T */
 
 int main(void)
 {
+   tokenizer_t  tokenizer;
+   parser_t     parser;
+   tree_t       ast;
 
- tokenizer_t  tokenizer;
- parser_t     parser;
- tree_t       ast;
+   init_tokenizer(&tokenizer);
+   init_parser(&parser);
+   init_tree(&ast);
 
- init_tokenizer(&tokenizer);
- init_parser(&parser);
- init_tree(&ast);
- 
-/*
- *
-   TEMP TEST BELOW:
-  
- */
+   ast.root = parser.parse(&parser, &tokenizer,"-(-((-4)+-6))");
+   printf("%ld\n", ast.eval(&ast));
 
-ast.root = parser.parse(&parser, &tokenizer,"-(-((-4)+-6))");
-ast.print(&ast);
-long result = ast.eval(&ast);
-printf("RESULT: %ld\n", result);
-ast.free_all(&ast);
+   ast.free_all(&ast);
+   tokenizer.free_str(&tokenizer);
 
- return 0;
+   return 0;
 
 }

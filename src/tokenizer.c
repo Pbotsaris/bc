@@ -24,6 +24,7 @@
 /* PUBLIC */
 static void load(tokenizer_t *tokenizer, char *str);
 static token_t *get_next_token(tokenizer_t *tokenizer);
+static void free_str(tokenizer_t *tokenizer);
 
 /* PRIVATE */
 static int is_whitespace(char c);
@@ -44,6 +45,7 @@ void init_tokenizer(tokenizer_t *tokenizer)
 {
    tokenizer->load = load;
    tokenizer->get_next_token = get_next_token;
+   tokenizer->free_str = free_str;
 }
 
 /*
@@ -63,10 +65,7 @@ static void load(tokenizer_t *tokenizer, char *str)
 static token_t *get_next_token(tokenizer_t *tokenizer)
 {
    if(!has_more_tokens(tokenizer))
-   {
-      printf("no more values\n");
       return NULL;
-   }
 
    if(is_num(tokenizer->str[tokenizer->cursor]))
       return do_num(tokenizer);
@@ -89,10 +88,14 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
    return NULL;
 }
 
+static void free_str(tokenizer_t *tokenizer)
+{
+   free(tokenizer->str);
+}
+
 /*
  * PRIVATE
  */
-
 
 static int is_whitespace(char c)     { return c == ' ' || c == '\t' || c == 10; }
 static int is_additive(char c)       { return c == '+' || c == '-';}  

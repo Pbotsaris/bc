@@ -11,8 +11,8 @@ typedef enum type {
   ADDITIVE_OPERATOR,
   MULTIPLICATION_OPERATOR,
   UNARY_OPERATOR,
-  }type_t;
-  
+}type_t;
+
 typedef struct token{
   type_t     type;
   long int   value;
@@ -23,6 +23,7 @@ typedef struct tokenizer {
   int        cursor;
   /* METHOD */
   void       (*load)(struct tokenizer*, char*);
+  void        (*free_str)(struct tokenizer*);
   token_t    *(*get_next_token) (struct tokenizer*); 
 }tokenizer_t;
 

@@ -23,7 +23,7 @@
 static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str);
 
 /* PRIVATE */
-static node_t *create_node(long int value, type_t type);
+static node_t *create_node(token_t *token);
 static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type);
 static node_t *numeric_literal(parser_t *parser, tokenizer_t *tokenizer);
 static node_t *binary_expression(parser_t *parser, tokenizer_t *tokenizer, func_ptr f, type_t type);
@@ -60,13 +60,15 @@ static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
  *   PRIVATE
  */
 
-static node_t *create_node(long int value, type_t type)
+static node_t *create_node(token_t *token)
 {
    node_t *node      = (node_t*) malloc(sizeof(node_t));
-   node->value       = value;
+   node->value       = token->value;
    node->left        = NULL;
    node->right       = NULL;
-   node->type        = type;
+   node->type        = token->type;
+
+   free(token);
 
    return node;
 }
@@ -88,14 +90,13 @@ static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type)
       return NULL;
    }
 
- //  free(parser->lookahead);
    parser->lookahead = tokenizer->get_next_token(tokenizer);
 
    /* do not return node for parethesis */
    if(type == PARENTHESIS)
       return NULL;
 
-   return create_node(token->value, token->type);
+   return create_node(token);
 
 }
 
@@ -106,25 +107,25 @@ static node_t *numeric_literal(parser_t *parser, tokenizer_t *tokenizer)
 
 static  node_t *parethesis_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-    /* ignore return  */
-     eat(parser, tokenizer, PARENTHESIS);  
-     node_t *exp = expression(parser, tokenizer);
+   /* ignore return  */
+   eat(parser, tokenizer, PARENTHESIS);  
+   node_t *exp = expression(parser, tokenizer);
 
-    /* 
-     TODO: ERROR HANDLING FOR CORRECT CLOSING PARETHESIS
-     eat closing parenthesis
-     */
-     eat(parser, tokenizer, PARENTHESIS);
+   /* 
+TODO: ERROR HANDLING FOR CORRECT CLOSING PARETHESIS
+eat closing parenthesis
+*/
+   eat(parser, tokenizer, PARENTHESIS);
 
-     return exp;
+   return exp;
 }
 
 static node_t *primary_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
    if(parser->lookahead->type == PARENTHESIS)
-       return parethesis_expression(parser, tokenizer);
+      return parethesis_expression(parser, tokenizer);
 
-    else
+   else
       return numeric_literal(parser, tokenizer); 
 }
 
@@ -132,7 +133,7 @@ static node_t *unary_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
    node_t *operator = NULL;
    if (parser->lookahead->type == ADDITIVE_OPERATOR) 
-        operator = eat(parser, tokenizer,ADDITIVE_OPERATOR);
+      operator = eat(parser, tokenizer,ADDITIVE_OPERATOR);
 
    if(operator != NULL)
    {
@@ -140,7 +141,7 @@ static node_t *unary_expression(parser_t *parser, tokenizer_t *tokenizer)
       operator->left = unary_expression(parser, tokenizer);
       return operator;
    }
-   
+
    return primary_expression(parser, tokenizer);
 }
 
@@ -172,14 +173,14 @@ static node_t *multiplicative_expression(parser_t *parser, tokenizer_t *tokenize
 
 static node_t *additive_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-  return binary_expression(parser,tokenizer, multiplicative_expression, ADDITIVE_OPERATOR);
+   return binary_expression(parser,tokenizer, multiplicative_expression, ADDITIVE_OPERATOR);
 }
 
 static node_t *expression(parser_t *parser, tokenizer_t *tokenizer)
 {
    return additive_expression(parser, tokenizer);
-}
 
+}
 static node_t *program(parser_t *parser, tokenizer_t *tokenizer)
 {
    return expression(parser, tokenizer);
