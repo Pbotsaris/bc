@@ -29,7 +29,6 @@ static token_t *get_next_token(tokenizer_t *tokenizer);
 static int is_whitespace(char c);
 static int is_additive(char c);
 static int is_multiplication(char c);
-static int is_modulo(char c);
 static int is_num(char c);
 static int is_parenthesis(char c);
 static int has_more_tokens(tokenizer_t *tokenizer);
@@ -78,9 +77,6 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
    else if(is_multiplication(tokenizer->str[tokenizer->cursor]))
        return do_operator(tokenizer, MULTIPLICATION_OPERATOR);
 
-   else if(is_modulo(tokenizer->str[tokenizer->cursor]))
-      return do_operator(tokenizer, MODULO_OPERATOR);
-
    else if(is_parenthesis(tokenizer->str[tokenizer->cursor]))
       return do_parenthesis(tokenizer);
 
@@ -97,10 +93,10 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
  * PRIVATE
  */
 
+
 static int is_whitespace(char c)     { return c == ' ' || c == '\t' || c == 10; }
-static int is_additive(char c)       { return c == '+' || c == '-';}
-static int is_multiplication(char c) { return c == '/' || c == '*';}
-static int is_modulo(char c)         { return c == '%';}
+static int is_additive(char c)       { return c == '+' || c == '-';}  
+static int is_multiplication(char c) { return c == '/' || c == '*' || c == '%';}
 static int is_num(char c)            { return c >= '0' && c <= '9'; }
 static int is_parenthesis(char c)    { return c == '(' || c == ')' ; }
 
@@ -141,7 +137,7 @@ static token_t *do_num(tokenizer_t *tokenizer)
    while(is_num(tokenizer->str[tokenizer->cursor]))
    {
       buffer[count]  = tokenizer->str[tokenizer->cursor];
-      tokenizer->cursor++;
+      tokenizer->cursor++; 
       count++;
    }
 

@@ -7,7 +7,7 @@
 
 typedef struct node{
   long int      value;
-  int           height;
+//  int           height;
   type_t        type;
   struct node   *left;
   struct node   *right;

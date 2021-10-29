@@ -67,6 +67,9 @@ static void print_type(type_t type)
   case MULTIPLICATION_OPERATOR:
      printf("Type: Mutiplication Operator\n");
       break;
+  case UNARY_OPERATOR:
+     printf("Type: Unary Operator\n");
+      break;
    default: 
      printf("Type: Unknown type\n");
  }
@@ -84,11 +87,10 @@ static void print_tree(node_t *root)
      printf("%ld\n", root->value); 
 
    else
-      printf("%c\n", (char)root->value);
+      printf("%c\n", (char)root->value); 
 
    print_tree(root->left);
    print_tree(root->right);
-
 }
 
 void static free_tree(node_t *root)

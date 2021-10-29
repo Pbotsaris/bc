@@ -17,3 +17,4 @@ Note that there is also a `tree` struct to store the resulting AST from the pars
 
 --
 Another note: You will notice that in the parser module the function `multiplicative_expression` that is evaluating mutiplcation and division is called within the `additive_expression`. This is to ensure that multiplication and division always take precedence. The same logic is applied with expression with parenthesis.
+

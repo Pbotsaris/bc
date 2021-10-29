@@ -10,7 +10,7 @@ typedef enum type {
   PARENTHESIS,
   ADDITIVE_OPERATOR,
   MULTIPLICATION_OPERATOR,
-  MODULO_OPERATOR,
+  UNARY_OPERATOR,
   }type_t;
   
 typedef struct token{
@@ -29,3 +29,5 @@ typedef struct tokenizer {
 void init_tokenizer(tokenizer_t *tokenizer);
 
 #endif
+
+
