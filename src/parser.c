@@ -88,7 +88,7 @@ static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type)
       return NULL;
    }
 
-   free(parser->lookahead);
+ //  free(parser->lookahead);
    parser->lookahead = tokenizer->get_next_token(tokenizer);
 
    /* do not return node for parethesis */

@@ -21,13 +21,22 @@
 /* PUBLIC */
 static void print_tree(node_t *root);
 static void free_all(tree_t *tree);
+static long eval(tree_t *tree);
 
 /* PRIVATE */
 static void print(tree_t *tree);
 static void free_tree(node_t *root);
 static void print_type(type_t type);
+static long evaluate(node_t *root, long result);
 
+
+/* PRIVATE HELPERS */
+
+static long mult_div(node_t *root);
+static long add_sub(node_t *root);
+static long unary(node_t *root);
 /*
+
  * PUBLIC
  */
 
@@ -41,18 +50,39 @@ static void print(tree_t *tree)
   print_tree(tree->root);
 }
 
+static long eval(tree_t *tree)
+{
+   return evaluate(tree->root, 0);
+}
+
 
 void init_tree(tree_t *tree)
 {
    tree->root       = NULL;
    tree->print      = print;
    tree->free_all   = free_all;
+   tree->eval       = eval;
 }
 
+static long evaluate(node_t *root, long result)
+{
+ if(root == NULL)
+      return 0;
 
-/*
- * PRIVATE 
- */
+   evaluate(root->left, result);
+   evaluate(root->right, result);
+
+   if(root->type == MULTIPLICATION_OPERATOR)
+     root->value = mult_div(root);
+
+   if(root->type == ADDITIVE_OPERATOR)
+      root->value = add_sub(root);
+
+    if(root->type == UNARY_OPERATOR)
+     root->value = unary(root);
+
+    return root->value;
+}
 
 static void print_type(type_t type)
 {
@@ -93,7 +123,8 @@ static void print_tree(node_t *root)
    print_tree(root->right);
 }
 
-void static free_tree(node_t *root)
+
+static void free_tree(node_t *root)
 {
    if(root == NULL)
       return;
@@ -103,5 +134,41 @@ void static free_tree(node_t *root)
 
    free(root);
 }
+
+
+/*
+ * PRIVATE HELPERS
+ */
+
+static long mult_div(node_t *root)
+{
+   if(root->value == '*')
+       return root->left->value * root->right->value;
+   if(root->value == '/')
+       return root->left->value / root->right->value;
+   else
+       return root->left->value % root->right->value;
+}
+
+static long add_sub(node_t *root)
+{
+   if(root->value == '+')
+       return root->left->value + root->right->value;
+   else
+       return root->left->value - root->right->value;
+}
+
+
+static long unary(node_t *root)
+{
+   if(root->value == '-')
+      return root->left->value * -1;  /* unary value always on left */
+   else
+      return root->left->value;
+}
+
+
+
+
 
 

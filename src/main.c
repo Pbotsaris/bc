@@ -41,8 +41,10 @@ int main(void)
   
  */
 
-ast.root = parser.parse(&parser, &tokenizer,"20 + 10 * (1 + -2)");
+ast.root = parser.parse(&parser, &tokenizer,"-(-((-4)+-6))");
 ast.print(&ast);
+long result = ast.eval(&ast);
+printf("RESULT: %ld\n", result);
 ast.free_all(&ast);
 
  return 0;

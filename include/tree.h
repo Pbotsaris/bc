@@ -6,9 +6,8 @@
 #include "./tokenizer.h"
 
 typedef struct node{
-  long int      value;
-//  int           height;
-  type_t        type;
+  long int      value; 
+  type_t        type;  
   struct node   *left;
   struct node   *right;
 }node_t;
@@ -18,6 +17,7 @@ typedef struct tree{
   /* METHOD */
   void         (*free_all) (struct tree*);
   void         (*print) (struct tree*);
+  long         (*eval) (struct tree*);
 }tree_t;
 
 void init_tree(tree_t *tree);
