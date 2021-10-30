@@ -1,6 +1,6 @@
 # my_bc 
 
-`my_bc` takes in a expression consisted of the operators `*`, `/`, `+`, `-`, `%` and numeric literals. The program then parsers through the input and evaluates result of the mathematical expression.
+`my_bc` takes in an expression consisted of the operators `*`, `/`, `+`, `-`, `%` and numeric literals. The program then parsers through the input and evaluates result of the mathematical expression.
 
 Floating point numbers are **not** supported.
 
@@ -17,7 +17,7 @@ Floating point numbers are **not** supported.
 
 ## run
     
-    bin/.my_bc "3+2*2"
+    ./bin/my_bc "3+2*2"
 
 
 ## Parsing
