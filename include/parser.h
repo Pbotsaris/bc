@@ -26,6 +26,7 @@ typedef struct parser{
   int valid;
   /* METHOD */
   node_t    *(*parse) (struct parser*, tokenizer_t*, char*);
+  void      (*validate) (struct parser*);
 }parser_t;
 
 

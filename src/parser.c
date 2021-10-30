@@ -21,6 +21,7 @@
 
 /* PUBLIC */
 static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str);
+static void validate(parser_t *parser);
 
 /* PRIVATE */
 static node_t *create_node(token_t *token);
@@ -43,6 +44,7 @@ static node_t *program(parser_t *parser, tokenizer_t *tokenizer);
 void init_parser(parser_t *parser)
 {
     parser->parse = parse;
+    parser->validate = validate;
     parser->valid  = 1;
 }
 
@@ -64,6 +66,16 @@ static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
     parser->lookahead = tokenizer->get_next_token(tokenizer);
 
     return program(parser, tokenizer);
+}
+
+static void validate(parser_t *parser)
+{
+  if(parser->lookahead != NULL)
+    {
+        printf("Syntax Error: Unexpected Token\n");
+        parser->valid = 0;
+        free(parser->lookahead);
+    }  
 }
 
 /*
