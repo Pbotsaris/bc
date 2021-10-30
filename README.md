@@ -1,7 +1,5 @@
 # my_bc 
 
-`my_bc` 
-
 `my_bc` takes in a expression consisted of the operators `*`, `/`, `+`, `-`, `%` and numeric literals. The program then parsers through the input and evaluates result of the mathematical operation.
 
 Floating point number are **not** supported.
