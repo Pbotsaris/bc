@@ -25,7 +25,7 @@
 int main(int argc, char *argv[])
 {
    if(argc < 2)
-      return 1;
+      return 0;
 
    tokenizer_t  tokenizer;
    parser_t     parser;
@@ -37,7 +37,15 @@ int main(int argc, char *argv[])
 
    ast.root = parser.parse(&parser, &tokenizer, argv[1]);
 
-   ast.eval(&ast);
+    if(parser.lookahead != NULL)
+    {
+        printf("Syntax Error: Unexpected Token\n");
+        parser.valid = 0;
+        free(parser.lookahead);
+    }
+    
+   if(parser.valid)
+       ast.eval(&ast);     
 
    ast.free_all(&ast);
    tokenizer.free_str(&tokenizer);

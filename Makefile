@@ -3,7 +3,6 @@ OBJ=obj
 BIN=bin
 
 CFLAGS +=-W  -Wall -Wextra -g3 -Iinclude -fsanitize=address
-
 CC=gcc
 TARGET=$(BIN)/my_bc
 RM=rm -rf
