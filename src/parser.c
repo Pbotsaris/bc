@@ -101,7 +101,10 @@ static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type)
 
    /* do not return node for parethesis */
    if(type == PARENTHESIS)
+   {
+      free(token);
       return NULL;
+   }
 
    return create_node(token);
 

@@ -56,13 +56,17 @@ void init_tokenizer(tokenizer_t *tokenizer)
 static void load(tokenizer_t *tokenizer, char *str)
 {
    size_t len = strlen(str);
-   tokenizer->str = (char*) malloc((len +  1) * sizeof(char));
+   
 
    if(validate(str))
+   {
+       tokenizer->str = (char*) malloc((len +  1) * sizeof(char));
        strcpy(tokenizer->str, str);
+   }
        
    else
       tokenizer->str = NULL;
+
 
    tokenizer->cursor = 0;
 }
