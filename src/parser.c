@@ -54,7 +54,7 @@ static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
 
    if(tokenizer->str == NULL)
    {
-      printf("invalid expression\n");
+      printf("Syntax Error: invalid Token\n");
       return NULL;
    }
 
@@ -87,13 +87,13 @@ static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type)
 
    if(token == NULL)
    {
-      printf("Unexpected end of input.\n");// TODO: ERROR HANDLIPNG
+      printf("Syntax Error: Unexpected end of input\n");
       return NULL;
    }
 
    if(token->type != type)
    {
-      printf("Unexpected token.\n"); // TODO: ERROR HANDLING, token types
+      printf("Syntax Error: Unexpected token\n"); 
       return NULL;
    }
 
@@ -117,16 +117,15 @@ static node_t *numeric_literal(parser_t *parser, tokenizer_t *tokenizer)
 
 static  node_t *parethesis_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-   /* ignore return  */
    eat(parser, tokenizer, PARENTHESIS);  
-   node_t *exp = expression(parser, tokenizer);
+    node_t *exp  = NULL;
 
-   /* 
-TODO: ERROR HANDLING FOR CORRECT CLOSING PARETHESIS
-eat closing parenthesis
-*/
+//  no empty or unbalanced parenthesis
+   if(parser->lookahead != NULL)
+       exp = expression(parser, tokenizer);
+   
    eat(parser, tokenizer, PARENTHESIS);
-
+   
    return exp;
 }
 
