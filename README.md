@@ -26,7 +26,7 @@ Parsing is achieved via a [recursive descent parser](https://en.wikipedia.org/wi
 
 Though not part of the current implmentation, a printing is available to vizualize the resulting tree. Printing is possible with the following:
 
-      tree_t tree; 
+      tree_t ast; 
       ast.root = parser.parse(&parser, &tokenizer, argv[1]);
       ast.print(&ast);
 
