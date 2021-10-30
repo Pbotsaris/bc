@@ -158,6 +158,14 @@ static node_t *primary_expression(parser_t *parser, tokenizer_t *tokenizer)
 static node_t *unary_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
     node_t *operator= NULL;
+
+     if(parser->lookahead == NULL)
+        {
+          printf("Syntax Error: Unexpected end of input\n");
+          parser->valid = 0;
+          return NULL;
+        }
+
     if (parser->lookahead->type == ADDITIVE_OPERATOR)
         operator= eat(parser, tokenizer, ADDITIVE_OPERATOR);
 
