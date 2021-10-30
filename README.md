@@ -1,6 +1,6 @@
 # my_bc 
 
-`my_bc` takes in a expression consisted of the operators `*`, `/`, `+`, `-`, `%` and numeric literals. The program then parsers through the input and evaluates result of the mathematical operation.
+`my_bc` takes in a expression consisted of the operators `*`, `/`, `+`, `-`, `%` and numeric literals. The program then parsers through the input and evaluates result of the mathematical expression.
 
 Floating point numbers are **not** supported.
 
@@ -22,7 +22,7 @@ Floating point numbers are **not** supported.
 
 ## Parsing
 
-Parsing is achieved via a [recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser) implementation. Results are stored in an AST and results evaluted by recursiving through the tree.
+Parsing is achieved via a [recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser) implementation. Results are stored in an AST and evaluted by recursiving through the tree.
 
 Though not part of the current implmentation, a printing is available to vizualize the resulting tree. Printing is possible with the following:
 
