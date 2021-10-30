@@ -22,9 +22,9 @@ Floating point numbers are **not** supported.
 
 ## Parsing
 
-Parsing is achieved via a [recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser) implementation. Results are stored in an AST and evaluted by recursiving through the tree.
+Parsing is achieved via a [recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser) implementation. Results are stored in an AST and evaluted by recursing through the tree.
 
-Though not part of the current implmentation, a printing is available to vizualize the resulting tree. Printing is possible with the following:
+Though not part of the current implementation, a printing is available to vizualize the resulting tree. Printing is possible with the following:
 
       tree_t ast; 
       ast.root = parser.parse(&parser, &tokenizer, argv[1]);
