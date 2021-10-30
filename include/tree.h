@@ -17,7 +17,7 @@ typedef struct tree{
   /* METHOD */
   void         (*free_all) (struct tree*);
   void         (*print) (struct tree*);
-  long         (*eval) (struct tree*);
+  void         (*eval) (struct tree*);
 }tree_t;
 
 void init_tree(tree_t *tree);

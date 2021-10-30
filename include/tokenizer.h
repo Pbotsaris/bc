@@ -11,6 +11,7 @@ typedef enum type {
   ADDITIVE_OPERATOR,
   MULTIPLICATION_OPERATOR,
   UNARY_OPERATOR,
+  INVALID
 }type_t;
 
 typedef struct token{

@@ -21,7 +21,7 @@
 /* PUBLIC */
 static void print_tree(node_t *root);
 static void free_all(tree_t *tree);
-static long eval(tree_t *tree);
+static void eval(tree_t *tree);
 
 /* PRIVATE */
 static void print(tree_t *tree);
@@ -50,9 +50,10 @@ static void print(tree_t *tree)
   print_tree(tree->root);
 }
 
-static long eval(tree_t *tree)
+static void eval(tree_t *tree)
 {
-   return evaluate(tree->root, 0);
+   long result = evaluate(tree->root, 0);
+   printf("%ld\n", result);
 }
 
 

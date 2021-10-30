@@ -33,8 +33,12 @@ int main(void)
    init_parser(&parser);
    init_tree(&ast);
 
-   ast.root = parser.parse(&parser, &tokenizer,"-(-((-4)+-6))");
-   printf("%ld\n", ast.eval(&ast));
+   ast.root = parser.parse(&parser, &tokenizer,"-(-((g-4)+-6))");
+   
+   if(ast.root == NULL)
+      return 1;
+
+   ast.eval(&ast);
 
    ast.free_all(&ast);
    tokenizer.free_str(&tokenizer);

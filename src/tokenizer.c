@@ -32,9 +32,10 @@ static int is_additive(char c);
 static int is_multiplication(char c);
 static int is_num(char c);
 static int is_parenthesis(char c);
+static int is_valid(char c);
+static int validate(char *str);
 static int has_more_tokens(tokenizer_t *tokenizer);
 static token_t *do_operator(tokenizer_t *tokenizer, type_t type);
-static token_t *do_parenthesis(tokenizer_t *tokenizer);
 static token_t *do_num(tokenizer_t *tokenizer);
 
 /*
@@ -57,7 +58,11 @@ static void load(tokenizer_t *tokenizer, char *str)
    size_t len = strlen(str);
    tokenizer->str = (char*) malloc((len +  1) * sizeof(char));
 
-   strcpy(tokenizer->str, str);
+   if(validate(str))
+       strcpy(tokenizer->str, str);
+       
+   else
+      tokenizer->str = NULL;
 
    tokenizer->cursor = 0;
 }
@@ -71,13 +76,13 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
       return do_num(tokenizer);
 
    else if(is_additive(tokenizer->str[tokenizer->cursor]))
-       return do_operator(tokenizer, ADDITIVE_OPERATOR);
+      return do_operator(tokenizer, ADDITIVE_OPERATOR);
 
    else if(is_multiplication(tokenizer->str[tokenizer->cursor]))
-       return do_operator(tokenizer, MULTIPLICATION_OPERATOR);
+      return do_operator(tokenizer, MULTIPLICATION_OPERATOR);
 
    else if(is_parenthesis(tokenizer->str[tokenizer->cursor]))
-      return do_parenthesis(tokenizer);
+      return do_operator(tokenizer, PARENTHESIS);
 
    else if(is_whitespace(tokenizer->str[tokenizer->cursor]))
    {
@@ -103,6 +108,24 @@ static int is_multiplication(char c) { return c == '/' || c == '*' || c == '%';}
 static int is_num(char c)            { return c >= '0' && c <= '9'; }
 static int is_parenthesis(char c)    { return c == '(' || c == ')' ; }
 
+static int is_valid(char c)
+{
+return is_whitespace(c) || is_additive(c) || is_multiplication(c) ||  is_num(c) || is_parenthesis(c); 
+}
+
+static int validate(char *str)
+{
+   int i = 0;
+   while(str[i] != '\0')
+   {
+      if(!is_valid(str[i]))
+         return 0;
+
+      i++;
+   }
+   return 1;
+}
+
 static int has_more_tokens(tokenizer_t *tokenizer)
 {
    return tokenizer->cursor < (int)strlen(tokenizer->str); 
@@ -115,17 +138,6 @@ static token_t *do_operator(tokenizer_t *tokenizer, type_t type)
    token->value     = (long int) tokenizer->str[tokenizer->cursor];
 
    tokenizer->cursor++;
-   return token;
-}
-
-static token_t *do_parenthesis(tokenizer_t *tokenizer)
-{
-
-   token_t *token    = (token_t*)malloc(sizeof(token_t));
-   token->type       = PARENTHESIS;
-   token->value      = (long int) tokenizer->str[tokenizer->cursor];
-   tokenizer->cursor++;
-
    return token;
 }
 
