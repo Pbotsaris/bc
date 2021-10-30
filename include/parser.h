@@ -31,6 +31,8 @@ typedef node_t *(func_ptr) (parser_t*, tokenizer_t*);
 
 void init_parser(parser_t *parser);
 
+
+
 #endif
 
 
