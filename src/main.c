@@ -22,9 +22,11 @@
 #include "../include/tokenizer.h"
 #include "../include/parser.h"
 
-
-int main(void)
+int main(int argc, char *argv[])
 {
+   if(argc < 2)
+      return 1;
+
    tokenizer_t  tokenizer;
    parser_t     parser;
    tree_t       ast;
@@ -33,10 +35,7 @@ int main(void)
    init_parser(&parser);
    init_tree(&ast);
 
-   ast.root = parser.parse(&parser, &tokenizer,"-(-((g-4)+-6))");
-   
-   if(ast.root == NULL)
-      return 1;
+   ast.root = parser.parse(&parser, &tokenizer, argv[1]);
 
    ast.eval(&ast);
 

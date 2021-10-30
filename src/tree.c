@@ -26,15 +26,15 @@ static void eval(tree_t *tree);
 /* PRIVATE */
 static void print(tree_t *tree);
 static void free_tree(node_t *root);
-static void print_type(type_t type);
 static long evaluate(node_t *root, long result);
 
 
 /* PRIVATE HELPERS */
-
+static void print_type(type_t type);
 static long mult_div(node_t *root);
 static long add_sub(node_t *root);
 static long unary(node_t *root);
+int modulo(long left, long right);
 /*
 
  * PUBLIC
@@ -85,28 +85,6 @@ static long evaluate(node_t *root, long result)
     return root->value;
 }
 
-static void print_type(type_t type)
-{
- switch(type)
- {
-  case NUMBER: 
-     printf("Type: Number\n");
-      break;
-  case ADDITIVE_OPERATOR:
-     printf("Type: Additive Operator\n");
-      break;
-  case MULTIPLICATION_OPERATOR:
-     printf("Type: Mutiplication Operator\n");
-      break;
-  case UNARY_OPERATOR:
-     printf("Type: Unary Operator\n");
-      break;
-   default: 
-     printf("Type: Unknown type\n");
- }
-}
-
-
 static void print_tree(node_t *root)
 {
    if(root == NULL)
@@ -136,10 +114,30 @@ static void free_tree(node_t *root)
    free(root);
 }
 
-
 /*
  * PRIVATE HELPERS
  */
+
+static void print_type(type_t type)
+{
+ switch(type)
+ {
+  case NUMBER: 
+     printf("Type: Number\n");
+      break;
+  case ADDITIVE_OPERATOR:
+     printf("Type: Additive Operator\n");
+      break;
+  case MULTIPLICATION_OPERATOR:
+     printf("Type: Mutiplication Operator\n");
+      break;
+  case UNARY_OPERATOR:
+     printf("Type: Unary Operator\n");
+      break;
+   default: 
+     printf("Type: Unknown type\n");
+ }
+}
 
 static long mult_div(node_t *root)
 {
@@ -148,7 +146,7 @@ static long mult_div(node_t *root)
    if(root->value == '/')
        return root->left->value / root->right->value;
    else
-       return root->left->value % root->right->value;
+       return modulo(root->left->value, root->right->value);
 }
 
 static long add_sub(node_t *root)
@@ -168,8 +166,4 @@ static long unary(node_t *root)
       return root->left->value;
 }
 
-
-
-
-
-
+int modulo(long left, long right)    { return (left % right + right) % right;}
