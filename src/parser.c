@@ -27,12 +27,10 @@ static void validate(parser_t *parser);
 static node_t *create_node(token_t *token);
 static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type);
 static node_t *numeric_literal(parser_t *parser, tokenizer_t *tokenizer);
-static node_t *binary_expression(parser_t *parser, tokenizer_t *tokenizer,
-                                 func_ptr f, type_t type);
+static node_t *binary_expression(parser_t *parser, tokenizer_t *tokenizer, func_ptr f, type_t type);
 static node_t *parethesis_expression(parser_t *parser, tokenizer_t *tokenizer);
 static node_t *primary_expression(parser_t *parser, tokenizer_t *tokenizer);
-static node_t *multiplicative_expression(parser_t *parser,
-                                         tokenizer_t *tokenizer);
+static node_t *multiplicative_expression(parser_t *parser, tokenizer_t *tokenizer);
 static node_t *additive_expression(parser_t *parser, tokenizer_t *tokenizer);
 static node_t *expression(parser_t *parser, tokenizer_t *tokenizer);
 static node_t *program(parser_t *parser, tokenizer_t *tokenizer);
@@ -70,7 +68,7 @@ static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
 
 static void validate(parser_t *parser)
 {
-  if(parser->lookahead != NULL)
+    if(parser->lookahead != NULL)
     {
         printf("Syntax Error: Unexpected Token\n");
         parser->valid = 0;
@@ -136,10 +134,10 @@ static node_t *parethesis_expression(parser_t *parser, tokenizer_t *tokenizer)
 
     /*  no empty or unbalanced parenthesis  */
     if (parser->lookahead != NULL && parser->lookahead->value != ')') 
-         exp = expression(parser, tokenizer);
+        exp = expression(parser, tokenizer);
     else 
         parser->valid = 0;
-    
+
     eat(parser, tokenizer, PARENTHESIS);
 
     return exp;
@@ -158,12 +156,12 @@ static node_t *unary_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
     node_t *operator         = NULL;
 
-     if(parser->lookahead == NULL)
-        {
-          printf("Syntax Error: Unexpected end of input\n");
-          parser->valid = 0;
-          return NULL;
-        }
+    if(parser->lookahead == NULL)
+    {
+        printf("Syntax Error: Unexpected end of input\n");
+        parser->valid = 0;
+        return NULL;
+    }
 
     if (parser->lookahead->type == ADDITIVE_OPERATOR)
         operator= eat(parser, tokenizer, ADDITIVE_OPERATOR);
