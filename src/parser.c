@@ -43,9 +43,9 @@ static node_t *program(parser_t *parser, tokenizer_t *tokenizer);
 
 void init_parser(parser_t *parser)
 {
-    parser->parse = parse;
-    parser->validate = validate;
-    parser->valid  = 1;
+    parser->parse       = parse;
+    parser->validate    = validate;
+    parser->valid       = 1;
 }
 
 /*
@@ -56,7 +56,7 @@ static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
 {
     tokenizer->load(tokenizer, str);
 
-    if (tokenizer->str == NULL)
+    if(tokenizer->str == NULL)
     {
         printf("Syntax Error: invalid Token\n");
         parser->valid = 0;
@@ -84,14 +84,13 @@ static void validate(parser_t *parser)
 
 static node_t *create_node(token_t *token)
 {
-    node_t *node = (node_t *)malloc(sizeof(node_t));
-    node->value = token->value;
-    node->left = NULL;
-    node->right = NULL;
-    node->type = token->type;
+    node_t *node        = (node_t *)malloc(sizeof(node_t));
+    node->value         = token->value;
+    node->left          = NULL;
+    node->right         = NULL;
+    node->type          = token->type;
 
     free(token);
-
     return node;
 }
 
@@ -102,14 +101,14 @@ static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type)
     if (token == NULL)
     {
         printf("Syntax Error: Unexpected end of input\n");
-         parser->valid = 0;
+        parser->valid = 0;
         return NULL;
     }
 
     if (token->type != type)
     {
         printf("Syntax Error: Unexpected token\n");
-         parser->valid = 0;
+        parser->valid = 0;
         return NULL;
     }
 
@@ -171,8 +170,8 @@ static node_t *unary_expression(parser_t *parser, tokenizer_t *tokenizer)
 
     if (operator!= NULL)
     {
-        operator->type = UNARY_OPERATOR;
-        operator->left = unary_expression(parser, tokenizer);
+        operator->type       = UNARY_OPERATOR;
+        operator->left       = unary_expression(parser, tokenizer);
         return operator;
     }
 
@@ -181,9 +180,9 @@ static node_t *unary_expression(parser_t *parser, tokenizer_t *tokenizer)
 
 static node_t *binary_expression(parser_t *parser, tokenizer_t *tokenizer, func_ptr f, type_t type)
 {
-    node_t *left = f(parser, tokenizer);
-    node_t *operator= NULL;
-    node_t *right = NULL;
+    node_t *left            = f(parser, tokenizer);
+    node_t *operator        = NULL;
+    node_t *right           = NULL;
 
     while (parser->lookahead != NULL && parser->lookahead->type == type)
     {
@@ -197,17 +196,14 @@ static node_t *binary_expression(parser_t *parser, tokenizer_t *tokenizer, func_
     return left;
 }
 
-static node_t *multiplicative_expression(parser_t *parser,
-                                         tokenizer_t *tokenizer)
+static node_t *multiplicative_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-    return binary_expression(parser, tokenizer, unary_expression,
-                             MULTIPLICATION_OPERATOR);
+    return binary_expression(parser, tokenizer, unary_expression, MULTIPLICATION_OPERATOR);
 }
 
 static node_t *additive_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-    return binary_expression(parser, tokenizer, multiplicative_expression,
-                             ADDITIVE_OPERATOR);
+    return binary_expression(parser, tokenizer, multiplicative_expression, ADDITIVE_OPERATOR);
 }
 
 static node_t *expression(parser_t *parser, tokenizer_t *tokenizer)
