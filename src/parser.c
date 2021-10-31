@@ -3,7 +3,7 @@
  *
  *       Filename:  parser.c
  *
- *    Description
+ *    Description   
  *
  *        Version:  1.0
  *        Created:  10/18/2021 09:12:12
@@ -114,7 +114,7 @@ static node_t *eat(parser_t *parser, tokenizer_t *tokenizer, type_t type)
 
     parser->lookahead = tokenizer->get_next_token(tokenizer);
 
-    /* do not return node for parethesis */
+    /* do not return node when parethesis */
     if (type == PARENTHESIS)
     {
         free(token);
@@ -134,7 +134,7 @@ static node_t *parethesis_expression(parser_t *parser, tokenizer_t *tokenizer)
     eat(parser, tokenizer, PARENTHESIS);
     node_t *exp = NULL;
 
-    //  no empty or unbalanced parenthesis
+    /*  no empty or unbalanced parenthesis  */
     if (parser->lookahead != NULL && parser->lookahead->value != ')') 
          exp = expression(parser, tokenizer);
     else 
@@ -156,7 +156,7 @@ static node_t *primary_expression(parser_t *parser, tokenizer_t *tokenizer)
 
 static node_t *unary_expression(parser_t *parser, tokenizer_t *tokenizer)
 {
-    node_t *operator= NULL;
+    node_t *operator         = NULL;
 
      if(parser->lookahead == NULL)
         {
@@ -186,11 +186,11 @@ static node_t *binary_expression(parser_t *parser, tokenizer_t *tokenizer, func_
 
     while (parser->lookahead != NULL && parser->lookahead->type == type)
     {
-        operator= eat(parser, tokenizer, type);
-        right = f(parser, tokenizer);
+        operator            = eat(parser, tokenizer, type);
+        right               = f(parser, tokenizer);
         // root
-        operator->left = left;
-        operator->right = right;
+        operator->left      = left;
+        operator->right     = right;
         left = operator;
     }
     return left;
