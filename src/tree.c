@@ -26,12 +26,12 @@ static void eval(tree_t *tree);
 /* PRIVATE */
 static void print(tree_t *tree);
 static void free_tree(node_t *root);
-static long evaluate(node_t *root, long result);
+static long evaluate(node_t *root, int *is_valid);
 
 
 /* PRIVATE HELPERS */
 static void print_type(type_t type);
-static long mult_div(node_t *root);
+static long mult_div(node_t *root, int *is_valid);
 static long add_sub(node_t *root);
 static long unary(node_t *root);
 int modulo(long left, long right);
@@ -52,10 +52,14 @@ static void print(tree_t *tree)
 
 static void eval(tree_t *tree)
 {
-   long result = evaluate(tree->root, 0);
-   printf("%ld\n", result);
+    int is_valid = 1;
+   long result = evaluate(tree->root, &is_valid);
+   
+    if(is_valid)
+       printf("%ld\n", result);
+    else
+       printf("Error: right side of division cannot be zero.\n");
 }
-
 
 void init_tree(tree_t *tree)
 {
@@ -65,16 +69,16 @@ void init_tree(tree_t *tree)
    tree->eval       = eval;
 }
 
-static long evaluate(node_t *root, long result)
+static long evaluate(node_t *root, int *is_valid)
 {
  if(root == NULL)
       return 0;
 
-   evaluate(root->left, result);
-   evaluate(root->right, result);
+   evaluate(root->left, is_valid);
+   evaluate(root->right, is_valid);
 
    if(root->type == MULTIPLICATION_OPERATOR)
-     root->value = mult_div(root);
+     root->value = mult_div(root, is_valid);
 
    if(root->type == ADDITIVE_OPERATOR)
       root->value = add_sub(root);
@@ -139,12 +143,18 @@ static void print_type(type_t type)
  }
 }
 
-static long mult_div(node_t *root)
+static long mult_div(node_t *root, int *is_valid)
 {
    if(root->value == '*')
        return root->left->value * root->right->value;
    if(root->value == '/')
-       return root->left->value / root->right->value;
+   {
+       if(root->right->value != 0)
+          return root->left->value / root->right->value;
+        
+        *is_valid = 0;
+        return 0;
+   }
    else
        return modulo(root->left->value, root->right->value);
 }
