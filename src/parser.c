@@ -52,14 +52,17 @@ void init_parser(parser_t *parser)
 
 static node_t *parse(parser_t *parser, tokenizer_t *tokenizer, char *str)
 {
+   
     tokenizer->load(tokenizer, str);
 
     if(tokenizer->str == NULL)
     {
         printf("Syntax Error: invalid Token\n");
         parser->valid = 0;
-        return NULL;
+         parser->lookahead = NULL;
+        return NULL; 
     }
+
 
     parser->lookahead = tokenizer->get_next_token(tokenizer);
 

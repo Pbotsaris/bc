@@ -73,6 +73,7 @@ static void load(tokenizer_t *tokenizer, char *str)
 
 static token_t *get_next_token(tokenizer_t *tokenizer)
 {
+
    if(!has_more_tokens(tokenizer))
       return NULL;
 
@@ -93,7 +94,7 @@ static token_t *get_next_token(tokenizer_t *tokenizer)
       tokenizer->cursor++;
       return get_next_token(tokenizer);
    }
-
+   
    return NULL;
 }
 
